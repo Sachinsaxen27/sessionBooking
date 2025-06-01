@@ -7,9 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "both": "concurrently  \"npm run dev \"  \"nodemon  backend/index.js\""
   },
   "dependencies": {
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.10",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
