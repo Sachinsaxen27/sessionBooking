@@ -4,7 +4,7 @@ function AllSessionList({update}) {
     const [sessionDetails, setMysessionDetails] = useState([])
     const [pageIndex, setMypageIndex] = useState(0)
     const handleGetData = async () => {
-        const response = await fetch("https://session-backend-1.onrender.com/Get_all_session", {
+        const response = await fetch("https://session-backend-1.onrender.com/api/sessionbook/Get_all_session", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -25,7 +25,7 @@ function AllSessionList({update}) {
     return (
         <>
             <br />
-            {sessionDetails.length===0? <h1>No Session Booked yet</h1>
+            {sessionDetails.length===0? <h1 className='text-center'>No Session Booked yet</h1>
             :<div>
                 <table className="table">
                     <thead className='table-secondary'>
@@ -55,7 +55,7 @@ function AllSessionList({update}) {
                 <nav aria-label="Page navigation example">
                     <ul className="pagination">
                         {pageIndex>0&&<li className="page-item"><a className="page-link" href="#"onClick={()=>setMypageIndex(pageIndex-1)}>Previous</a></li>}
-                        {sessionDetails?.map((value, index) => {
+                        {sessionDetails.length>1&&sessionDetails?.map((value, index) => {
                             return <li className="page-item" key={index}><a className="page-link" href="#"onClick={()=>setMypageIndex(index)}>{index + 1}</a></li>
                         })}
                         {pageIndex<sessionDetails.length-1&&<li className="page-item"><a className="page-link" href="#" onClick={()=>setMypageIndex(pageIndex+1)}>Next</a></li>}

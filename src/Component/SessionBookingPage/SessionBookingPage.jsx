@@ -2,6 +2,16 @@ import React, { useEffect, useState } from 'react'
 import './SessionBookingPage.css'
 import AllSessionList from '../Sessionlist/allSessionList'
 function SessionBookingPage() {
+
+    const days = [
+        { label: 'S', value: 'Sun' },
+        { label: 'M', value: 'Mon' },
+        { label: 'T', value: 'Tue' },
+        { label: 'W', value: 'Wed' },
+        { label: 'Th', value: 'Thu' },
+        { label: 'F', value: 'Fri' },
+        { label: 'S', value: 'Sat' },
+    ];
     const [alert, setMyalert] = useState(false)
     const [update, setMyupdate] = useState(false)
     const [bookingCred, setMyBookingCred] = useState({
@@ -16,7 +26,7 @@ function SessionBookingPage() {
     const [sessionAllpreferreddate, setMysessionAllpreferraddate] = useState([])
     const handlepreferredday = (day) => {
         setMySessionPreferredday(prev =>
-            prev.includes(day) ? prev : [...prev, day]
+            prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
         );
     }
     const handlechange = (e) => {
@@ -65,7 +75,7 @@ function SessionBookingPage() {
 
     const handlesumbit = async (e) => {
         e.preventDefault();
-        const response = await fetch("https://session-backend-1.onrender.com/book_session", {
+        const response = await fetch("https://session-backend-1.onrender.com/api/sessionbook/book_session", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -107,21 +117,21 @@ function SessionBookingPage() {
     return (
         <>
             <div className='sessionBookingOuterDiv'>
-                <div className='sessionBookingHeaderDiv'>+ Session Page</div>
+                <div className='sessionBookingHeaderDiv text-primary fw-bold'>+ Session Page</div>
                 <div>
                     <form>
                         <div className='sessionFormFirstContainer'>
                             <div>
                                 <label htmlFor="sessionDate">Session Date</label>
-                                <input type="date" name="sessionDate" id="sessionDate" onChange={handlechange} />
+                                <input type="text" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} placeholder='Session Date' name="sessionDate" id="sessionDate" onChange={handlechange} />
                             </div>
-                            <div>
+                            <div style={{ width: '10rem' }}>
                                 <label htmlFor="sessionTime">Session Time</label>
-                                <input type="time" name="sessionTime" id="sessionTime" onChange={handlechange} />
+                                <input type="text" onFocus={(e) => e.target.type = 'time'} onBlur={(e) => e.target.type = 'text'} placeholder='Session Time' name="sessionTime" id="sessionTime" onChange={handlechange} style={{ width: '6rem' }} />
                             </div>
                             <div>
-                                <label htmlFor="totalSession">Total Session</label>
-                                <input type="number" name="totalSession" id="totalSession" onChange={handlechange} />
+                                <label htmlFor="totalSession">Total Session(s)</label>
+                                <input type="number" name="totalSession" id="totalSession" onChange={handlechange} placeholder='0' disabled={bookingCred.sessionDate === ''} />
                             </div>
                         </div>
                         <div className="sessionFormSecondContainer">
@@ -130,25 +140,34 @@ function SessionBookingPage() {
                                     Session Interval
                                 </label>
                                 <span>
-                                    <input type="number" name="sessionInterval" id="sessionInterval" style={{ width: "3rem" }} placeholder='00' disabled={Number(bookingCred.totalSession) <= 1} onChange={handlechange} /> days
+                                    <input type="number" name="sessionInterval" id="sessionInterval" style={{ width: "3rem" }} placeholder='00' disabled={Number(bookingCred.totalSession) <= 1} onChange={handlechange} />&nbsp; days
                                 </span>
                             </div>
                             <div style={{ paddingLeft: "20px" }}>
-                                <div style={{ flexDirection: 'row', margin: "0px", alignItems: 'center' }}>
-                                    <label htmlFor="preferredDays">Preferred Days -</label>
+                                <div style={{ flexDirection: 'row', margin: "0px", alignItems: 'baseline' }}>
+                                    <label htmlFor="preferredDays">Preferred Days -</label> &nbsp;
                                     <span className='text-primary' style={{ fontSize: "12px" }}>
                                         {sessionPreferredday.join(',')}
                                     </span>
                                 </div>
                                 <div style={{ flexDirection: 'row', margin: '0px' }}>
-                                    <input type='button' className='buttonprefrredDay' style={{ padding: "0px" }} value='S' onClick={() => handlepreferredday("Sun")} />
-                                    <input type='button' className='buttonprefrredDay' style={{ padding: "0px" }} value='M' onClick={() => handlepreferredday('Mon')} />
-                                    <input type='button' className='buttonprefrredDay' style={{ padding: "0px" }} value='T' onClick={() => handlepreferredday('Tue')} />
-                                    <input type='button' className='buttonprefrredDay' style={{ padding: "0px" }} value='W' onClick={() => handlepreferredday('Wed')} />
-                                    <input type='button' className='buttonprefrredDay' style={{ padding: "0px" }} value='Th' onClick={() => handlepreferredday('Thu')} />
-                                    <input type='button' className='buttonprefrredDay' style={{ padding: "0px" }} value='F' onClick={() => handlepreferredday('Fri')} />
-                                    <input type='button' className='buttonprefrredDay' style={{ padding: "0px" }} value='S' onClick={() => handlepreferredday('Sat')} />
-                                </div>
+                                    {days.map((day, index) => (
+                                        <input
+                                            key={index}
+                                            type='button'
+                                            className='buttonprefrredDay'
+                                            style={{
+                                                padding: '0px',
+                                                margin: '4px',
+                                                boxShadow: sessionPreferredday.includes(day.value) ? '0 0 5px 2px #007BFF' : 'none',
+                                                cursor: 'pointer',
+                                                border: Number(bookingCred.totalSession) <= 1 ? '1px solid' : ''
+                                            }}
+                                            value={day.label}
+                                            onClick={() => handlepreferredday(day.value)}
+                                            disabled={Number(bookingCred.totalSession) <= 1}
+                                        />
+                                    ))} </div>
                             </div>
                             <div></div>
                         </div>
@@ -156,16 +175,16 @@ function SessionBookingPage() {
                             <div>
                                 <label htmlFor="sessionDuration">Duration per session</label>
                                 <span>
-                                    <input type="number" name="sessionDuration" id="SessionDuration" style={{ width: '3rem' }} placeholder='60' onChange={handlechange} /> Minutes
+                                    <input type="number" name="sessionDuration" id="SessionDuration" disabled={bookingCred.sessionDate === ''}  style={{ width: '3rem' }} placeholder='60' onChange={handlechange} />&nbsp; Minutes
                                 </span>
                             </div>
                             <div>
                                 <label htmlFor="lastsessiondate">Last Session Date</label>
                                 <input type="date" name="lastsessiondate" value={sessionAllpreferreddate.length > 1 ? sessionAllpreferreddate[sessionAllpreferreddate.length - 1] : sessionAllpreferreddate[0] || ''} id="Lastsessiondate" readOnly />
                             </div>
-                            <div>
+                            <div style={{width:"10rem"}}>
                                 <label htmlFor="lastsessionTime">Last Session Time</label>
-                                <input type="time" name="lastsessionTime" id="LastsessionTime" value={bookingCred.sessionTime} readOnly />
+                                <input type="text" name="lastsessionTime" id="LastsessionTime"placeholder='Invalid Date' style={{width:'6rem'}} value={bookingCred.sessionTime} onChange={(e)=>bookingCred.sessionTime?e.target.type='time':e.target.type='text'} readOnly />
                             </div>
                         </div>
                         <div className="d-grid gap-2 d-md-flex justify-content-md-end">
