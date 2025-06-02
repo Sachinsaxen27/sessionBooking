@@ -25,7 +25,8 @@ function AllSessionList({update}) {
     return (
         <>
             <br />
-            <div>
+            {sessionDetails.length===0? <h1>No Session Booked yet</h1>
+            :<div>
                 <table className="table">
                     <thead className='table-secondary'>
                         <tr>
@@ -60,7 +61,7 @@ function AllSessionList({update}) {
                         {pageIndex<sessionDetails.length-1&&<li className="page-item"><a className="page-link" href="#" onClick={()=>setMypageIndex(pageIndex+1)}>Next</a></li>}
                     </ul>
                 </nav>
-            </div>
+            </div>}
         </>
     )
 }
