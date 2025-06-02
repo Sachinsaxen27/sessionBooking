@@ -24,6 +24,7 @@ router.post('/book_session', async (req, res) => {
     }
 })
 router.get('/Get_all_session',async(req,res)=>{
+    console.log("Hit")
     try{
         let bookedsession=await Booking.find()
         res.status(200).json({message:"Data recivce",bookedsession})
