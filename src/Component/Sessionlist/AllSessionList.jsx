@@ -26,7 +26,7 @@ function AllSessionList({update}) {
         <>
             <br />
             {sessionDetails.length===0? <h1 className='text-center'>No Session Booked yet</h1>
-            :<div>
+            :<div className='mx-1'>
                 <table className="table">
                     <thead className='table-secondary'>
                         <tr>
