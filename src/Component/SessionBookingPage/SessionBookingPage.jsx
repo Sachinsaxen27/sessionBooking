@@ -65,7 +65,7 @@ function SessionBookingPage() {
 
     const handlesumbit = async (e) => {
         e.preventDefault();
-        const response = await fetch("http://localhost:3000/api/sessionbook/book_session", {
+        const response = await fetch("https://session-backend-tivg.onrender.com/book_session", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
