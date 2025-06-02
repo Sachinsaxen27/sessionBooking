@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const mongoose = require('mongoose')
 
-const mongoURI ='mongodb+srv://sachinsaxenapec:6WtVUNw16x6GjZap@sessionbooking.j37ge8m.mongodb.net/?retryWrites=true&w=majority&appName=sessionBooking'
+const mongoURI ='mongodb+srv://sachinsaxenapec:e65YEQ.KusKi63.@sessionbooking.j37ge8m.mongodb.net/?retryWrites=true&w=majority&appName=sessionBooking'
 
 const connectTomongo = () => {
     mongoose.connect(mongoURI).then(() => console.log('MongoDB connected!'))
