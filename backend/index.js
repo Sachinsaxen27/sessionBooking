@@ -1,11 +1,12 @@
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 
 const express = require('express')
-const database = require('./Database/database')
+const database = require('./Database/Database')
 const cors = require('cors')
 database()
 
 const app = express()
-const port = 3000;
+const port =process.env.PORT;
         
 app.use(cors());
 

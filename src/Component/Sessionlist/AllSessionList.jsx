@@ -4,7 +4,7 @@ function AllSessionList({update}) {
     const [sessionDetails, setMysessionDetails] = useState([])
     const [pageIndex, setMypageIndex] = useState(0)
     const handleGetData = async () => {
-        const response = await fetch("https://session-backend-tivg.onrender.com/Get_all_session", {
+        const response = await fetch("https://session-backend-1.onrender.com/Get_all_session", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
