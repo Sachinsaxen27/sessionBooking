@@ -6,7 +6,11 @@ const cors = require('cors')
 database()
 
 const app = express()
+<<<<<<< HEAD
 const port = 3000;
+=======
+const port = 5000;
+>>>>>>> 7832065783b2c40794624a79b1c77d2cc309f366
         
 app.use(cors());
 
